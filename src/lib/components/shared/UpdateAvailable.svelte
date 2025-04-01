@@ -3,7 +3,7 @@
     import { writable } from "svelte/store";
     import { updateSettings } from "$lib/utils/settings";
     import { markdownIt } from "$lib/utils/stores.js";
-    import { invoke } from "@tauri-apps/api";
+    import { invoke } from "$lib/utils/signaling";
 
     let updateText = writable("Update Now");
 </script>

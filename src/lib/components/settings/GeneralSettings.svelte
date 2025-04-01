@@ -1,9 +1,8 @@
 <script lang="ts">
     import { settings } from "$lib/utils/settings";
-    import { invoke } from "@tauri-apps/api";
     import SettingItem from "./SettingItem.svelte";
     import { ifaceChangedStore } from "$lib/utils/stores";
-    import { emit } from "@tauri-apps/api/event";
+    import { emit, invoke } from "$lib/utils/signaling";
 
     let colorDropdownOpen = $state(false);
 

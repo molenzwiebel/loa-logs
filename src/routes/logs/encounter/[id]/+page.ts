@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "$lib/utils/signaling";
 import type { Encounter } from "$lib/types";
 import type { PageLoad } from "./$types";
 

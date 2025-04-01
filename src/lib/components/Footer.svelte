@@ -3,6 +3,10 @@
     import { settings } from "$lib/utils/settings";
     import { getVersion } from "@tauri-apps/api/app";
     import { onMount } from "svelte";
+    import * as env from "$lib/utils/environment";
+    import { connectToPeer, getPeerId } from "$lib/utils/signaling";
+    import { writeText } from "@tauri-apps/api/clipboard";
+
     interface Props {
         tab: MeterTab;
     }
@@ -50,6 +54,13 @@
 
             requestAnimationFrame(scrollLeft);
         });
+    }
+
+    function connectToRemote() {
+        const remoteId = prompt("Enter the remote ID:");
+        if (remoteId) {
+            connectToPeer(remoteId);
+        }
     }
 
     let div: HTMLElement;
@@ -121,15 +132,30 @@
             {/if}
             <div class="px-1">&nbsp;</div>
         </div>
-        <div class="fixed bottom-0 right-0 flex items-center">
+        <div class="fixed right-0 bottom-0 flex items-center">
             <div class="h-6">LOA Logs</div>
-            <div class="ml-1 mr-2 text-xs text-gray-500">
-                {#await getVersion()}
-                    v
-                {:then version}
-                    v{version}
-                {/await}
-            </div>
+
+            {#if env.isApplication}
+                <div class="mr-2 ml-1 text-xs text-gray-500">
+                    {#await getVersion()}
+                        v
+                    {:then version}
+                        v{version}
+                    {/await}
+                </div>
+
+                <div class="mr-2 ml-1 text-xs text-gray-500">
+                    {#await getPeerId()}
+                        Connecting...
+                    {:then peerId}
+                        <button class="h-6 shrink-0 px-1.5" onclick={() => writeText(peerId)}>Share Online</button>
+                    {/await}
+                </div>
+            {/if}
+
+            {#if env.isRemoteViewer}
+                <button class="h-6 shrink-0 px-1.5" onclick={connectToRemote}>Connect</button>
+            {/if}
         </div>
     </div>
 </div>

@@ -10,7 +10,7 @@
         type PartyEvent
     } from "$lib/types";
     import { millisToMinutesAndSeconds } from "$lib/utils/numbers";
-    import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+    import { listen, type UnlistenFn } from "$lib/utils/signaling";
     import { onDestroy, onMount } from "svelte";
     import { flip } from "svelte/animate";
     import EncounterInfo from "./EncounterInfo.svelte";
@@ -39,7 +39,7 @@
     import Rdps from "$lib/components/shared/Rdps.svelte";
     import { isValidName } from "$lib/utils/strings";
     import MissingInfo from "./shared/MissingInfo.svelte";
-    import { invoke } from "@tauri-apps/api";
+    import { invoke } from "$lib/utils/signaling";
     import { uploadLog } from "$lib/utils/sync";
 
     let time = $state(+Date.now());

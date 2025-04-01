@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { IdentityEvent, StaggerEvent } from "$lib/types";
-    import { emit, listen, type UnlistenFn } from "@tauri-apps/api/event";
+    import { emit, listen, type UnlistenFn } from "$lib/utils/signaling";
     import { onDestroy, onMount } from "svelte";
 
     let identity: IdentityEvent = $state({ gauge1: 0, gauge2: 0, gauge3: 0 });

@@ -1,6 +1,5 @@
 import { classColors } from "$lib/constants/colors";
-import { invoke } from "@tauri-apps/api";
-import { emit } from "@tauri-apps/api/event";
+import { invoke, emit } from "$lib/utils/signaling";
 import { register, unregisterAll } from "@tauri-apps/api/globalShortcut";
 import { get, writable } from "svelte/store";
 import { hideAll } from "tippy.js";

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { settings } from "$lib/utils/settings";
-    import { invoke } from "@tauri-apps/api";
+    import { invoke } from "$lib/utils/signaling";
     import SettingItem from "./SettingItem.svelte";
 
     async function toggleBlur() {

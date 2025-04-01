@@ -47,11 +47,11 @@ export function truncateString(str: string, len = 10): string {
 }
 
 export function getSkillIcon(skillIcon: string): string {
-    return encodeURIComponent("\\" + (skillIcon !== "" ? skillIcon : "unknown.png")) + queryParam;
+    return "/" + (skillIcon !== "" ? skillIcon : "unknown.png") + queryParam;
 }
 
 export function getImagePath(path: string): string {
-    return encodeURIComponent("\\" + path.replaceAll("/", "\\")) + queryParam;
+    return "/" + path + queryParam;
 }
 
 export function getEstherFromNpcId(npcId: number): string {

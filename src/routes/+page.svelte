@@ -13,15 +13,13 @@
     } from "$lib/utils/settings";
     import { appWindow } from "@tauri-apps/api/window";
     import { onMount } from "svelte";
+    import * as env from "$lib/utils/environment";
     import merge from "lodash-es/merge";
-    import { join, resourceDir } from "@tauri-apps/api/path";
-    import { convertFileSrc } from "@tauri-apps/api/tauri";
     import { classesMap } from "$lib/constants/classes";
     import { estherMap } from "$lib/constants/esthers";
-    import { invoke } from "@tauri-apps/api";
+    import { convertFileSrc, join, resourceDir, invoke, emit } from "$lib/utils/signaling";
     import { classColors } from "$lib/constants/colors";
     import { queryParam } from "$lib/utils/strings";
-    import { emit } from "@tauri-apps/api/event";
     import { checkUpdate } from "@tauri-apps/api/updater";
 
     onMount(() => {
@@ -35,10 +33,12 @@
             }
             colors.set(merge(classColors, $colors));
             updateSettings.set(update);
-            if ($settings.general.alwaysOnTop) {
-                await appWindow.setAlwaysOnTop(true);
-            } else {
-                await appWindow.setAlwaysOnTop(false);
+            if (env.isApplication) {
+                if ($settings.general.alwaysOnTop) {
+                    await appWindow.setAlwaysOnTop(true);
+                } else {
+                    await appWindow.setAlwaysOnTop(false);
+                }
             }
             if ($settings.general.bossOnlyDamageDefaultOn && !$settings.general.bossOnlyDamage) {
                 $settings.general.bossOnlyDamage = true;
@@ -59,22 +59,24 @@
                     convertFileSrc(await join(await resourceDir(), "images", "classes", esther.icon)) + queryParam;
             }
 
-            try {
-                const { shouldUpdate, manifest } = await checkUpdate();
-                if (shouldUpdate) {
-                    $updateSettings.available = true;
-                    const oldManifest = $updateSettings.manifest;
-                    $updateSettings.manifest = manifest;
-                    if (oldManifest?.version !== $updateSettings.manifest?.version) {
-                        $updateSettings.dismissed = false;
+            if (env.isApplication) {
+                try {
+                    const { shouldUpdate, manifest } = await checkUpdate();
+                    if (shouldUpdate) {
+                        $updateSettings.available = true;
+                        const oldManifest = $updateSettings.manifest;
+                        $updateSettings.manifest = manifest;
+                        if (oldManifest?.version !== $updateSettings.manifest?.version) {
+                            $updateSettings.dismissed = false;
+                        }
+                        $updateSettings.isNotice = manifest?.version.includes("2024");
                     }
-                    $updateSettings.isNotice = manifest?.version.includes("2024");
+                } catch (e) {
+                    await invoke("write_log", { message: String(e) });
                 }
-            } catch (e) {
-                await invoke("write_log", { message: String(e) });
-            }
 
-            await registerShortcuts($settings.shortcuts);
+                await registerShortcuts($settings.shortcuts);
+            }
 
             // disable blur on windows 11
             let ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);

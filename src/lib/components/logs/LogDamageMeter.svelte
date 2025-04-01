@@ -9,7 +9,7 @@
         type PartyInfo
     } from "$lib/types";
     import { formatTimestampDate, millisToMinutesAndSeconds } from "$lib/utils/numbers";
-    import { invoke } from "@tauri-apps/api/tauri";
+    import { invoke } from "$lib/utils/signaling";
     import LogDamageMeterRow from "./LogDamageMeterRow.svelte";
     import LogPlayerBreakdown from "./LogPlayerBreakdown.svelte";
     import LogEncounterInfo from "./LogEncounterInfo.svelte";

@@ -3,7 +3,7 @@
     import { Drawer } from "flowbite-svelte";
     import { sineIn } from "svelte/easing";
     import { tooltip } from "$lib/utils/tooltip";
-    import { invoke } from "@tauri-apps/api";
+    import { invoke } from "$lib/utils/signaling";
     import { checkUpdate } from "@tauri-apps/api/updater";
     import { writable } from "svelte/store";
     import { updateSettings } from "$lib/utils/settings";
@@ -58,7 +58,7 @@
     {transitionParams}
     bind:hidden>
     <div class="flex items-center justify-between py-4">
-        <div class="px-4 text-lg font-semibold uppercase text-gray-200">LOA Logs</div>
+        <div class="px-4 text-lg font-semibold text-gray-200 uppercase">LOA Logs</div>
         <button onclick={() => (hidden = true)} class="px-4" aria-label="Close">
             <svg class="size-5 fill-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960">
                 <path

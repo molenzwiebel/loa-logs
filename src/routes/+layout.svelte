@@ -1,14 +1,13 @@
 <script lang="ts">
     import "../app.css";
     import { onDestroy, onMount } from "svelte";
-    import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+    import { listen, invoke, type UnlistenFn } from "$lib/utils/signaling";
     import NProgress from "nprogress";
     import "nprogress/nprogress.css";
     import { afterNavigate, goto, invalidateAll, onNavigate } from "$app/navigation";
     import { settings, updateSettings } from "$lib/utils/settings";
     import { appWindow } from "@tauri-apps/api/window";
     import { checkUpdate } from "@tauri-apps/api/updater";
-    import { invoke } from "@tauri-apps/api";
     import UpdateAvailable from "$lib/components/shared/UpdateAvailable.svelte";
     interface Props {
         children?: import("svelte").Snippet;
